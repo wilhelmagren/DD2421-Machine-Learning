@@ -39,10 +39,10 @@ def assignment5(m1, m2, m3):
 
     # Split the monk1 data into subsets according to the selected attribute using the function select and compute
     # the information gains for the nodes on the next level of the tree.
-    # splitted = dtree.select(m1, md.attributes[4], 1)  # I don't know how to split it... what is the value?
-    # print(splitted)
-    the_tree = dtree.buildTree(m1, md.attributes)
-    qt.drawTree(the_tree)
+    splitted = dtree.select(m1, md.attributes[4], False)  # I don't know how to split it... what is the value?
+    print(splitted)
+    # the_tree = dtree.buildTree(m1, md.attributes)
+    # qt.drawTree(the_tree)
     return
 
 
