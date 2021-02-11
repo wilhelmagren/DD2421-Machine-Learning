@@ -19,7 +19,7 @@ def generate_data(N, arg, verbose=False):
         0: lin separable
         1: lin not separable
         2: polyrbf separable
-        3: polyrbf not separable
+        3: not separable
     """
     if arg == 0:
         return generate_data_separable(N, verbose)
@@ -27,6 +27,8 @@ def generate_data(N, arg, verbose=False):
         return generate_data_not_separable(N, verbose)
     elif arg == 2:
         return generate_data_polyrbf_separable(N, verbose)
+    elif arg == 3:
+        return generate_data_not_separable(N, verbose)
     else:
         print('<| bro you fucked up\n<| terminating...')
         exit()
@@ -73,9 +75,9 @@ def generate_data_not_separable(N, verbose=True):
             with size N x 1
 
     """
-    classA = np.concatenate((np.random.randn(50, 2) * 0.1 + np.array([0.8, 0.0]),
-                             np.random.randn(50, 2) * 0.1 + np.array([-0.8, 0.0])))
-    classB = np.random.rand(100, 2) * 0.3 + np.array([0.0, -0.2])
+    classA = np.concatenate((np.random.randn(25, 2) * 0.2 + np.array([-1.2, -1.0]),
+                             np.random.randn(25, 2) * 0.2 + np.array([-0.7, -0.8])))
+    classB = np.random.rand(50, 2) * 0.5 + np.array([0.0, -1.0])
     # plot_classes(classA, classB, False, False)
     inputs = np.concatenate((classA, classB))
     target = np.concatenate((np.ones(classA.shape[0]),

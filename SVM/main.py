@@ -6,7 +6,7 @@ from scipy.optimize import minimize
 
 # --- Global Variables ----------------------------------------------------------------------
 N = 100  # Number of training samples
-C = 50  # Upper bound for constraint, not really sure if these values even effect outcome...
+C = 50  # Upper bound for constraint, used for slack variables good when noisy data
 bounds = [(0, C) for b in range(N)]  # Lower bound for alpha values in the B-array
 start = np.zeros(N)  # Initial guess of the alpha-vector
 
@@ -120,10 +120,10 @@ def perform_task(ker_tpe, ker_arg, dataset_arg, xx, verbose=False):
 
 def main():
     # rbf_tpe, rbf_arg, dataset_arg, verbose
-    dic = [float(x/100) for x in range(10, 150)]
+    dic = [float(x/100) for x in range(2, 150)]
     for i in dic:
         xx = i*100
-        perform_task('rbf', i, 2, xx, False)
+        perform_task('rbf', i, 3, xx, False)
 
 
 if __name__ == "__main__":
