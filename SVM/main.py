@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
 # --- Global Variables ----------------------------------------------------------------------
-N = 200  # Number of training samples
+N = 100  # Number of training samples
 C = 50  # Upper bound for constraint, not really sure if these values even effect outcome...
 bounds = [(0, C) for b in range(N)]  # Lower bound for alpha values in the B-array
 start = np.zeros(N)  # Initial guess of the alpha-vector
@@ -85,18 +85,23 @@ def indicator(nonzero, x, y, b, kernel_tpe, kernel_arg):
     return summer - b
 
 
-def plot(nonzero, b, ker_type, ker_args, savefig=False):
-    xgrid = np.linspace(-1, 1)
-    ygrid = np.linspace(-1, 1)
+def plot(nonzero, b, ker_type, ker_args, xx, savefig=False):
+    fig = plt.Figure()
+    xgrid = np.linspace(-1.0, 1.0)
+    ygrid = np.linspace(-1.5, 1.0)
     grid = np.array([[indicator(nonzero, x, y, b, ker_type, ker_args) for x in xgrid] for y in ygrid])
     plt.contour(xgrid, ygrid, grid, (-1.0, 0.0, 1.0), colors=('red', 'black', 'blue'),
                 linewidths=(1, 2, 1))
     if savefig:
-        plt.savefig('svmplot_contour.pdf')  # Save a copy of the plot
+        filename = f"plot_{ker_type}_arg={xx}.png"
+        plt.savefig(f'out/{filename}')  # Save a copy of the plot
+        plt.close()
+        return
+
     plt.show()
 
 
-def perform_task(ker_tpe, ker_arg, dataset_arg, verbose=False):
+def perform_task(ker_tpe, ker_arg, dataset_arg, xx, verbose=False):
     np.random.seed(69)
     global inputs, target, P
     classA, classB, inputs, target = ds.generate_data(N, dataset_arg, verbose)
@@ -110,12 +115,15 @@ def perform_task(ker_tpe, ker_arg, dataset_arg, verbose=False):
     alpha = ret['x']
     nonzero = extract_nonzero_list(alpha, inputs, target)
     # print(f"nonzero yo:\n {nonzero}")
-    plot(nonzero, b_value(nonzero, ker_tpe, ker_arg), ker_tpe, ker_arg, False)
+    plot(nonzero, b_value(nonzero, ker_tpe, ker_arg), ker_tpe, ker_arg, xx, True)
 
 
 def main():
     # rbf_tpe, rbf_arg, dataset_arg, verbose
-    perform_task('poly', 2, 1, False)
+    dic = [float(x/100) for x in range(10, 150)]
+    for i in dic:
+        xx = i*100
+        perform_task('rbf', i, 2, xx, False)
 
 
 if __name__ == "__main__":
