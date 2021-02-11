@@ -130,8 +130,8 @@ def assignment7(m1, m3):
         tmp_1 = []
         tmp_3 = []
         for l in mean_list_pruned:
-            tmp_1.append((1 - l[0])**2)
-            tmp_3.append((1 - l[1])**2)
+            tmp_1.append(1 - l[0])
+            tmp_3.append(1 - l[1])
             pruned_avg_monk1 += l[0]
             pruned_avg_monk3 += l[1]
         monk1_pruned_variance.append(statistics.variance(tmp_1))
@@ -139,8 +139,8 @@ def assignment7(m1, m3):
         tmp_1 = []
         tmp_3 = []
         for l in mean_list_ori:
-            tmp_1.append((1 - l[0])**2)
-            tmp_3.append((1 - l[1])**2)
+            tmp_1.append(1 - l[0])
+            tmp_3.append(1 - l[1])
             ori_avg_monk1 += l[0]
             ori_avg_monk3 += l[1]
         monk1_original_variance.append(statistics.variance(tmp_1))
