@@ -8,4 +8,4 @@ if __name__ == "__main__":
     images = []
     for frame in frames:
         images.append(imageio.imread(join(MY_PATH, frame)))
-    imageio.mimsave("out/movie.gif", images)
+    imageio.mimsave("movie.gif", images, fps=2)

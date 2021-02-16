@@ -6,7 +6,7 @@ from scipy.optimize import minimize
 
 # --- Global Variables ----------------------------------------------------------------------
 N = 100  # Number of training samples
-C = 50  # Upper bound for constraint, used for slack variables good when noisy data
+C = 5  # Upper bound for constraint, used for slack variables good when noisy data
 bounds = [(0, C) for b in range(N)]  # Lower bound for alpha values in the B-array
 start = np.zeros(N)  # Initial guess of the alpha-vector
 
@@ -88,11 +88,17 @@ def indicator(nonzero, x, y, b, kernel_tpe, kernel_arg):
 def plot(nonzero, b, ker_type, ker_args, xx, savefig=False):
     fig = plt.Figure()
     xgrid = np.linspace(-1.0, 1.0)
-    ygrid = np.linspace(-1.5, 1.0)
+    ygrid = np.linspace(-1.5, 0.5)
     grid = np.array([[indicator(nonzero, x, y, b, ker_type, ker_args) for x in xgrid] for y in ygrid])
     plt.contour(xgrid, ygrid, grid, (-1.0, 0.0, 1.0), colors=('red', 'black', 'blue'),
                 linewidths=(1, 2, 1))
+    plt.title("{} kernel with sigma={} and {} slack variables".format(ker_type, ker_args, C))
     if savefig:
+        #s = ""
+        #if xx < 10:
+        #    s = "00" + str(xx)
+        #if 10 <= xx < 100:
+        #    s = "0" + str(xx)
         filename = f"plot_{ker_type}_arg={xx}.png"
         plt.savefig(f'out/{filename}')  # Save a copy of the plot
         plt.close()
@@ -101,7 +107,7 @@ def plot(nonzero, b, ker_type, ker_args, xx, savefig=False):
     plt.show()
 
 
-def perform_task(ker_tpe, ker_arg, dataset_arg, xx, verbose=False):
+def perform_task(ker_tpe, ker_arg, dataset_arg, xx=0.0, verbose=False):
     np.random.seed(69)
     global inputs, target, P
     classA, classB, inputs, target = ds.generate_data(N, dataset_arg, verbose)
@@ -120,10 +126,12 @@ def perform_task(ker_tpe, ker_arg, dataset_arg, xx, verbose=False):
 
 def main():
     # rbf_tpe, rbf_arg, dataset_arg, verbose
-    dic = [float(x/100) for x in range(2, 150)]
-    for i in dic:
-        xx = i*100
-        perform_task('rbf', i, 3, xx, False)
+    #dic = [float(x/100) for x in range(10, 100)]
+    #for i in dic:
+    #    xx = i*100
+    #    print("<| Time to go, turn around {}".format(xx))
+    #    perform_task('rbf', i, 4, i, False)
+    perform_task('rbf', 0.5, 4, 0.5, False)
 
 
 if __name__ == "__main__":

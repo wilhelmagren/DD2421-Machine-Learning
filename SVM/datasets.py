@@ -20,6 +20,7 @@ def generate_data(N, arg, verbose=False):
         1: lin not separable
         2: polyrbf separable
         3: not separable
+        4: sun, for rbf
     """
     if arg == 0:
         return generate_data_separable(N, verbose)
@@ -29,6 +30,10 @@ def generate_data(N, arg, verbose=False):
         return generate_data_polyrbf_separable(N, verbose)
     elif arg == 3:
         return generate_data_not_separable(N, verbose)
+    elif arg == 4:
+        return generate_data_sun(N, verbose)
+    elif arg == 5:
+        return generate_data_poly_bow(N, verbose)
     else:
         print('<| bro you fucked up\n<| terminating...')
         exit()
@@ -75,9 +80,41 @@ def generate_data_not_separable(N, verbose=True):
             with size N x 1
 
     """
-    classA = np.concatenate((np.random.randn(25, 2) * 0.2 + np.array([-1.2, -1.0]),
-                             np.random.randn(25, 2) * 0.2 + np.array([-0.7, -0.8])))
-    classB = np.random.rand(50, 2) * 0.5 + np.array([0.0, -1.0])
+    classA = np.concatenate((np.random.randn(25, 2) * 0.2 + np.array([-0.3, -0.2]),
+                             np.random.randn(25, 2) * 0.2 + np.array([0.3, -0.2])))
+    classB = np.concatenate((np.random.randn(25, 2) * 0.2 + np.array([-0.3, -1.0]),
+                             np.random.randn(25, 2) * 0.2 + np.array([0.3, -1.0])))
+    # plot_classes(classA, classB, False, False)
+    inputs = np.concatenate((classA, classB))
+    target = np.concatenate((np.ones(classA.shape[0]),
+                             -np.ones(classB.shape[0])))
+    permute = list(range(N))
+    random.shuffle(permute)
+    inputs = inputs[permute, :]
+    target = target[permute]
+    if verbose:
+        print(f"\t The class_A array looks like:\n {classA}\n\t and has the shape {classA.shape}\n")
+        print(f"\t The class_B array looks like:\n {classB}\n\t and has the shape {classB.shape}\n")
+        print(f"\t The inputs array looks like:\n {inputs}\n\t and has the shape {inputs.shape}\n")
+        print(f"\t The target array looks like:\n {target}\n\t and has the shape {target.shape}\n")
+    return classA, classB, inputs, target
+
+
+def generate_data_sun(N, verbose=True):
+    """
+        The class arrays will look like the following:
+            classQ = [[x1, y1], [x2, y2], ..., [xN, yN]]
+            with size N x 2
+
+        The target array will look like the following:
+            target = [t1, t2, ..., tN]
+            with size N x 1
+
+    """
+    classA = np.concatenate((np.random.randn(20, 2) * 0.2 + np.array([-0.4, -0.3]),
+                             np.random.randn(20, 2) * 0.2 + np.array([0.3, 0.0]),
+                             np.random.randn(10, 2) * 0.2 + np.array([0.0, 0.1])))
+    classB = np.random.rand(50, 2) * 0.5 + np.array([-0.1, -0.8])
     # plot_classes(classA, classB, False, False)
     inputs = np.concatenate((classA, classB))
     target = np.concatenate((np.ones(classA.shape[0]),
@@ -107,7 +144,38 @@ def generate_data_polyrbf_separable(N, verbose=True):
     """
     classA = np.concatenate((np.random.randn(25, 2) * 0.2 + np.array([-0.3, 0.2]),
                              np.random.randn(25, 2) * 0.2 + np.array([0.3, 0.2])))
-    classB = np.random.rand(50, 2) * 0.5 + np.array([0.0, -1.0])
+    classB = np.random.randn(50, 2) * 0.2 + np.array([0.0, -1.0])
+    plot_classes(classA, classB, False, False)
+    inputs = np.concatenate((classA, classB))
+    target = np.concatenate((np.ones(classA.shape[0]),
+                             -np.ones(classB.shape[0])))
+    permute = list(range(N))
+    random.shuffle(permute)
+    inputs = inputs[permute, :]
+    target = target[permute]
+    if verbose:
+        print(f"\t The class_A array looks like:\n {classA}\n\t and has the shape {classA.shape}\n")
+        print(f"\t The class_B array looks like:\n {classB}\n\t and has the shape {classB.shape}\n")
+        print(f"\t The inputs array looks like:\n {inputs}\n\t and has the shape {inputs.shape}\n")
+        print(f"\t The target array looks like:\n {target}\n\t and has the shape {target.shape}\n")
+    return classA, classB, inputs, target
+
+
+def generate_data_poly_bow(N, verbose=True):
+    """
+        The class arrays will look like the following:
+            classQ = [[x1, y1], [x2, y2], ..., [xN, yN]]
+            with size N x 2
+
+        The target array will look like the following:
+            target = [t1, t2, ..., tN]
+            with size N x 1
+
+    """
+    classA = np.concatenate((np.random.randn(20, 2) * 0.2 + np.array([-0.3, -0.4]),
+                             np.random.randn(20, 2) * 0.2 + np.array([0.3, 0.0]),
+                             np.random.randn(10, 2) * 0.2 + np.array([0.0, 0.2])))
+    classB = np.random.rand(50, 2) * 0.5 + np.array([0.0, -0.8])
     # plot_classes(classA, classB, False, False)
     inputs = np.concatenate((classA, classB))
     target = np.concatenate((np.ones(classA.shape[0]),
