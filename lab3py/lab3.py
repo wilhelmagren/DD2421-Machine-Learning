@@ -44,7 +44,9 @@ def computePrior(labels, W=None):
 
     # TODO: compute the values of prior for each class!
     # ==========================
-    
+    for jdx, k in enumerate(classes):
+        idx = np.where(labels==k)[0]
+        prior[jdx] = len(idx) / Npts
     # ==========================
 
     return prior
@@ -68,9 +70,14 @@ def mlParams(X, labels, W=None):
 
     # TODO: fill in the code to compute mu and sigma!
     # ==========================
-    
-    # ==========================
+    for jdx, k in enumerate(classes):
+        idx = np.where(labels==k)[0]
+        xlc = X[idx, :]
+        nK = len(idx)
 
+        mu[jdx] += np.sum(xlc, axis=0) / nK
+        sigma[jdx] = np.diag(sum(np.square(xlc - mu[jdx])) / nK)
+    # ==========================
     return mu, sigma
 
 # in:      X - N x d matrix of M data points
@@ -86,7 +93,10 @@ def classifyBayes(X, prior, mu, sigma):
 
     # TODO: fill in the code to compute the log posterior logProb!
     # ==========================
-    
+    for k in range(Nclasses):
+        for idx, x in enumerate(X):
+            mul_term = np.linalg.multi_dot([(x-mu[k]), np.linalg.inv(sigma[k]), np.transpose(x - mu[k])])/2
+            logProb[k][idx] = -np.log(np.linalg.det(sigma[k]))/2 - mul_term + np.log(prior[k])
     # ==========================
     
     # one possible way of finding max a-posteriori once
@@ -127,15 +137,15 @@ plotGaussian(X,labels,mu,sigma)
 # Call the `testClassifier` and `plotBoundary` functions for this part.
 
 
-#testClassifier(BayesClassifier(), dataset='iris', split=0.7)
+testClassifier(BayesClassifier(), dataset='iris', split=0.7)
 
 
 
-#testClassifier(BayesClassifier(), dataset='vowel', split=0.7)
+testClassifier(BayesClassifier(), dataset='vowel', split=0.7)
 
 
 
-#plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
+plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
 
 
 # ## Boosting functions to implement
