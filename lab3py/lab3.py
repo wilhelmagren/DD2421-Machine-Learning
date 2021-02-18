@@ -5,11 +5,16 @@
 
 # ## Jupyter notebooks
 # 
-# In this lab, you can use Jupyter <https://jupyter.org/> to get a nice layout of your code and plots in one document. However, you may also use Python as usual, without Jupyter.
+# In this lab, you can use Jupyter <https://jupyter.org/> to get a nice layout of your code and plots in one
+# document. However, you may also use Python as usual, without Jupyter.
 # 
-# If you have Python and pip, you can install Jupyter with `sudo pip install jupyter`. Otherwise you can follow the instruction on <http://jupyter.readthedocs.org/en/latest/install.html>.
+# If you have Python and pip, you can install Jupyter with `sudo pip install jupyter`. Otherwise you can follow the
+# instruction on <http://jupyter.readthedocs.org/en/latest/install.html>.
 # 
-# And that is everything you need! Now use a terminal to go into the folder with the provided lab files. Then run `jupyter notebook` to start a session in that folder. Click `lab3.ipynb` in the browser window that appeared to start this very notebook. You should click on the cells in order and either press `ctrl+enter` or `run cell` in the toolbar above to evaluate all the expressions.
+# And that is everything you need! Now use a terminal to go into the folder with the provided lab files. Then run
+# `jupyter notebook` to start a session in that folder. Click `lab3.ipynb` in the browser window that appeared to
+# start this very notebook. You should click on the cells in order and either press `ctrl+enter` or `run cell` in the
+# toolbar above to evaluate all the expressions.
 
 # ## Import the libraries
 # 
@@ -33,23 +38,30 @@ import random
 # out: prior - C x 1 vector of class priors
 def computePrior(labels, W=None):
     Npts = labels.shape[0]
-    if W is None:
-        W = np.ones((Npts,1))/Npts
-    else:
-        assert(W.shape[0] == Npts)
     classes = np.unique(labels)
     Nclasses = np.size(classes)
 
-    prior = np.zeros((Nclasses,1))
+    prior = np.zeros((Nclasses, 1))
+    w_sum = 0
+    if W is None:
+        W = np.ones((Npts,1))/Npts
+        for jdx, k in enumerate(classes):
+            idx = np.where(labels == k)[0]
+            prior[jdx] = len(idx) / Npts
+        print("<| ================================================\nThis is the prior", prior)
+        return prior
 
-    # TODO: compute the values of prior for each class!
-    # ==========================
-    for jdx, k in enumerate(classes):
-        idx = np.where(labels==k)[0]
-        prior[jdx] = len(idx) / Npts
-    # ==========================
+    else:
+        assert(W.shape[0] == Npts)
+        # TODO: compute the values of prior for each class!
+        # ==========================
+        for jdx, k in enumerate(classes):
+            prior[k] += W[jdx]
+        w_sum = sum(W)
+        print("<| ================================================\nThis is the prior", prior)
+        return prior / w_sum
+        # ==========================
 
-    return prior
 
 # NOTE: you do not need to handle the W argument for this part!
 # in:      X - N x d matrix of N data points
@@ -62,23 +74,34 @@ def mlParams(X, labels, W=None):
     classes = np.unique(labels)
     Nclasses = np.size(classes)
 
-    if W is None:
+    mu = np.zeros((Nclasses, Ndims))
+    sigma = np.zeros((Nclasses, Ndims, Ndims))
+
+    if W is not None:
         W = np.ones((Npts,1))/float(Npts)
+        # TODO: fill in the code to compute mu and sigma!
+        # ==========================
+        for jdx, k in enumerate(classes):
+            idx = np.where(labels == k)[0]
+            xlc = X[idx, :]
+            nK = len(idx)
 
-    mu = np.zeros((Nclasses,Ndims))
-    sigma = np.zeros((Nclasses,Ndims,Ndims))
-
-    # TODO: fill in the code to compute mu and sigma!
-    # ==========================
-    for jdx, k in enumerate(classes):
-        idx = np.where(labels==k)[0]
-        xlc = X[idx, :]
-        nK = len(idx)
-
-        mu[jdx] += np.sum(xlc, axis=0) / nK
-        sigma[jdx] = np.diag(sum(np.square(xlc - mu[jdx])) / nK)
-    # ==========================
+            mu[jdx] += np.sum(xlc, axis=0) / nK
+            sigma[jdx] = np.diag(sum(np.square(xlc - mu[jdx])) / nK)
+        # ==========================
+    else:
+        W = np.ones((Npts, 1)) / Npts
+        for jdx, k in enumerate(classes):
+            idx = np.where(labels == k)[0]
+            xlc = X[idx, :]
+            ww = W[idx, :]
+            w_sum = sum(ww)
+            mu[jdx] += np.sum(ww*xlc, axis=0) / w_sum
+            sigma[jdx] = np.diag(sum(ww * np.square(xlc - mu[jdx])) / w_sum)
+    print("<| ================================================\nThis is the mu matrix,\n", mu)
+    print("<| ================================================\nThis is the sigma matrix, \n", sigma)
     return mu, sigma
+
 
 # in:      X - N x d matrix of M data points
 #      prior - C x 1 matrix of class priors
@@ -148,6 +171,13 @@ testClassifier(BayesClassifier(), dataset='vowel', split=0.7)
 plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
 
 
+def weight_update(w, alpha, h, c, Z):
+    if h == c:
+        return w * np.exp(-alpha) / Z
+    else:
+        return w * np.exp(alpha) / Z
+
+
 # ## Boosting functions to implement
 # 
 # The lab descriptions state what each function should do.
@@ -161,13 +191,13 @@ plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
 #              alphas - (maximum) length T Python list of vote weights
 def trainBoost(base_classifier, X, labels, T=10):
     # these will come in handy later on
-    Npts,Ndims = np.shape(X)
+    Npts, Ndims = np.shape(X)
 
     classifiers = [] # append new classifiers to this list
     alphas = [] # append the vote weight of the classifiers to this list
 
     # The weights for the first iteration
-    wCur = np.ones((Npts,1))/float(Npts)
+    wCur = np.ones((Npts, 1))/float(Npts)
 
     for i_iter in range(0, T):
         # a new classifier can be trained like this, given the current weights
@@ -178,11 +208,22 @@ def trainBoost(base_classifier, X, labels, T=10):
 
         # TODO: Fill in the rest, construct the alphas etc.
         # ==========================
-        
+        epsilon = 0
+        # ADABOOST (2)
+        correct_votes = np.where(vote == labels)[0]
+        for i in correct_votes:
+            epsilon -= wCur[i]
+
+        # Sum over all the data points, and calculate the weight distribution
+        for idx, x in enumerate(X):
+            epsilon += weight_update(w, alpha, h, c, Z)
+
+        alphas.append(np.log(1 - epsilon) - np.log(epsilon)/2)
         # alphas.append(alpha) # you will need to append the new alpha
         # ==========================
         
     return classifiers, alphas
+
 
 # in:       X - N x d matrix of N data points
 # classifiers - (maximum) length T Python list of trained classifiers as above
