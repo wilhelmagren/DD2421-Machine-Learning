@@ -45,22 +45,15 @@ def computePrior(labels, W=None):
     w_sum = 0
     if W is None:
         W = np.ones((Npts,1))/Npts
-        for jdx, k in enumerate(classes):
-            idx = np.where(labels == k)[0]
-            prior[jdx] = len(idx) / Npts
-        print("<| ================================================\nThis is the prior", prior)
-        return prior
-
     else:
         assert(W.shape[0] == Npts)
-        # TODO: compute the values of prior for each class!
-        # ==========================
-        for jdx, k in enumerate(classes):
-            prior[k] += W[jdx]
-        w_sum = sum(W)
-        print("<| ================================================\nThis is the prior", prior)
-        return prior / w_sum
-        # ==========================
+
+    for idx, k in enumerate(classes):
+        prior[k] += W[idx]
+    w_sum = sum(W)
+    # print("<| ================================================\nThis is the prior", prior)
+    return prior / w_sum
+    # ==========================
 
 
 # NOTE: you do not need to handle the W argument for this part!
@@ -69,7 +62,7 @@ def computePrior(labels, W=None):
 # out:    mu - C x d matrix of class means (mu[i] - class i mean)
 #      sigma - C x d x d matrix of class covariances (sigma[i] - class i sigma)
 def mlParams(X, labels, W=None):
-    assert(X.shape[0]==labels.shape[0])
+    assert(X.shape[0] == labels.shape[0])
     Npts,Ndims = np.shape(X)
     classes = np.unique(labels)
     Nclasses = np.size(classes)
@@ -77,29 +70,21 @@ def mlParams(X, labels, W=None):
     mu = np.zeros((Nclasses, Ndims))
     sigma = np.zeros((Nclasses, Ndims, Ndims))
 
-    if W is not None:
-        W = np.ones((Npts,1))/float(Npts)
-        # TODO: fill in the code to compute mu and sigma!
-        # ==========================
-        for jdx, k in enumerate(classes):
-            idx = np.where(labels == k)[0]
-            xlc = X[idx, :]
-            nK = len(idx)
-
-            mu[jdx] += np.sum(xlc, axis=0) / nK
-            sigma[jdx] = np.diag(sum(np.square(xlc - mu[jdx])) / nK)
-        # ==========================
+    if W is None:
+        W = np.ones((Npts, 1))/float(Npts)
     else:
-        W = np.ones((Npts, 1)) / Npts
-        for jdx, k in enumerate(classes):
-            idx = np.where(labels == k)[0]
-            xlc = X[idx, :]
-            ww = W[idx, :]
-            w_sum = sum(ww)
-            mu[jdx] += np.sum(ww*xlc, axis=0) / w_sum
-            sigma[jdx] = np.diag(sum(ww * np.square(xlc - mu[jdx])) / w_sum)
-    print("<| ================================================\nThis is the mu matrix,\n", mu)
-    print("<| ================================================\nThis is the sigma matrix, \n", sigma)
+        assert(W.shape[0] == Npts)
+
+    W = np.ones((Npts, 1)) / Npts
+    for jdx, k in enumerate(classes):
+        idx = np.where(labels == k)[0]
+        xlc = X[idx, :]
+        wlc = W[idx, :]
+        w_sum = sum(wlc)
+        mu[jdx] += np.sum(wlc*xlc, axis=0) / w_sum
+        sigma[jdx] = np.diag(sum(wlc * np.square(xlc - mu[jdx])) / w_sum)
+    # print("<| ================================================\nThis is the mu matrix,\n", mu)
+    # print("<| ================================================\nThis is the sigma matrix, \n", sigma)
     return mu, sigma
 
 
@@ -111,7 +96,7 @@ def mlParams(X, labels, W=None):
 def classifyBayes(X, prior, mu, sigma):
 
     Npts = X.shape[0]
-    Nclasses,Ndims = np.shape(mu)
+    Nclasses, Ndims = np.shape(mu)
     logProb = np.zeros((Nclasses, Npts))
 
     # TODO: fill in the code to compute the log posterior logProb!
@@ -154,28 +139,21 @@ class BayesClassifier(object):
 
 X, labels = genBlobs(centers=5)
 mu, sigma = mlParams(X,labels)
-plotGaussian(X,labels,mu,sigma)
+#plotGaussian(X,labels,mu,sigma)
 
 
 # Call the `testClassifier` and `plotBoundary` functions for this part.
 
-
+print("\n<|iris")
 testClassifier(BayesClassifier(), dataset='iris', split=0.7)
 
 
-
-testClassifier(BayesClassifier(), dataset='vowel', split=0.7)
-
-
-
-plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
+#print("\n<|vowel")
+#testClassifier(BayesClassifier(), dataset='vowel', split=0.7)
 
 
-def weight_update(w, alpha, h, c, Z):
-    if h == c:
-        return w * np.exp(-alpha) / Z
-    else:
-        return w * np.exp(alpha) / Z
+
+#plotBoundary(BayesClassifier(), dataset='iris',split=0.7)
 
 
 # ## Boosting functions to implement
@@ -193,8 +171,8 @@ def trainBoost(base_classifier, X, labels, T=10):
     # these will come in handy later on
     Npts, Ndims = np.shape(X)
 
-    classifiers = [] # append new classifiers to this list
-    alphas = [] # append the vote weight of the classifiers to this list
+    classifiers = []  # append new classifiers to this list
+    alphas = []  # append the vote weight of the classifiers to this list
 
     # The weights for the first iteration
     wCur = np.ones((Npts, 1))/float(Npts)
@@ -208,18 +186,26 @@ def trainBoost(base_classifier, X, labels, T=10):
 
         # TODO: Fill in the rest, construct the alphas etc.
         # ==========================
+        #epsilon = np.sum(wCur)
         epsilon = 0
         # ADABOOST (2)
         correct_votes = np.where(vote == labels)[0]
-        for i in correct_votes:
-            epsilon -= wCur[i]
-
-        # Sum over all the data points, and calculate the weight distribution
-        for idx, x in enumerate(X):
-            epsilon += weight_update(w, alpha, h, c, Z)
-
-        alphas.append(np.log(1 - epsilon) - np.log(epsilon)/2)
+        wrong_votes = np.where(vote != labels)[0]
+        #for v in correct_votes:
+        #    epsilon -= wCur[v]
+        for v in wrong_votes:
+            epsilon += wCur[v]
+        #print("<|eps- = [{}]\n<|eps+ = [{}]".format(epsilon, eps))
+        #print(f"epsilon=[{epsilon}]")
         # alphas.append(alpha) # you will need to append the new alpha
+        alpha = (np.log(1 - epsilon) - np.log(epsilon))/2
+        alphas.append(alpha)
+        w_tmp = wCur
+        for v in wrong_votes:
+            wCur[v] = w_tmp[v] * np.exp(alpha)
+        for v in correct_votes:
+            wCur[v] = w_tmp[v] * np.exp(-alpha)
+        wCur /= sum(wCur)
         # ==========================
         
     return classifiers, alphas
@@ -243,11 +229,14 @@ def classifyBoost(X, classifiers, alphas, Nclasses):
         # TODO: implement classificiation when we have trained several classifiers!
         # here we can do it by filling in the votes vector with weighted votes
         # ==========================
-        
+        for i_iter in range(Ncomps):
+            vote = classifiers[i_iter].classify(X)
+            for i in range(Npts):
+                votes[i][vote[i]] += alphas[i_iter]
         # ==========================
 
         # one way to compute yPred after accumulating the votes
-        return np.argmax(votes,axis=1)
+        return np.argmax(votes, axis=1)
 
 
 # The implemented functions can now be summarized another classifer, the `BoostClassifier` class. This class enables boosting different types of classifiers by initializing it with the `base_classifier` argument. No need to add anything here.
@@ -275,16 +264,16 @@ class BoostClassifier(object):
 # 
 # Call the `testClassifier` and `plotBoundary` functions for this part.
 
-
-#testClassifier(BoostClassifier(BayesClassifier(), T=10), dataset='iris',split=0.7)
-
-
-
-#testClassifier(BoostClassifier(BayesClassifier(), T=10), dataset='vowel',split=0.7)
+print("\n<|iris")
+testClassifier(BoostClassifier(BayesClassifier(), T=10), dataset='iris',split=0.7)
 
 
+print("\n<|vowel")
+testClassifier(BoostClassifier(BayesClassifier(), T=10), dataset='vowel',split=0.7)
 
-#plotBoundary(BoostClassifier(BayesClassifier()), dataset='iris',split=0.7)
+
+
+plotBoundary(BoostClassifier(BayesClassifier()), dataset='iris',split=0.7)
 
 
 # Now repeat the steps with a decision tree classifier.

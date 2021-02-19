@@ -6,7 +6,7 @@ from scipy.optimize import minimize
 
 # --- Global Variables ----------------------------------------------------------------------
 N = 100  # Number of training samples
-C = 50  # Upper bound for constraint, used for slack variables good when noisy data
+C = 1000  # Upper bound for constraint, used for slack variables good when noisy data
 bounds = [(0, C) for b in range(N)]  # Lower bound for alpha values in the B-array
 start = np.zeros(N)  # Initial guess of the alpha-vector
 
@@ -92,7 +92,7 @@ def plot(nonzero, b, ker_type, ker_args, xx, savefig=False):
     grid = np.array([[indicator(nonzero, x, y, b, ker_type, ker_args) for x in xgrid] for y in ygrid])
     plt.contour(xgrid, ygrid, grid, (-1.0, 0.0, 1.0), colors=('red', 'black', 'blue'),
                 linewidths=(1, 2, 1))
-    plt.title("{} kernel with sigma = {}, and C = {}".format(ker_type, ker_args, C))
+    plt.title("{}nomial kernel with {} degrees, and C = {}".format(ker_type, ker_args, C))
     if savefig:
         #s = ""
         #if xx < 10:
@@ -131,7 +131,7 @@ def main():
     #    xx = i*10
     #    print("<| Time to go, turn around {}".format(xx))
     #    perform_task('rbf', i, 4, i, False)
-    perform_task('rbf', 1.2, 4, 1.2, False)
+    perform_task('poly', 9, 5, 9, False)
 
 
 if __name__ == "__main__":
