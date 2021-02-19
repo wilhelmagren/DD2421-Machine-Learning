@@ -50,9 +50,9 @@ def computePrior(labels, W=None):
 
     for idx, k in enumerate(classes):
         prior[k] += W[idx]
-    w_sum = sum(W)
+    np.linalg.norm(prior)
     # print("<| ================================================\nThis is the prior", prior)
-    return prior / w_sum
+    return prior
     # ==========================
 
 
@@ -75,7 +75,6 @@ def mlParams(X, labels, W=None):
     else:
         assert(W.shape[0] == Npts)
 
-    W = np.ones((Npts, 1)) / Npts
     for jdx, k in enumerate(classes):
         idx = np.where(labels == k)[0]
         xlc = X[idx, :]
@@ -144,8 +143,8 @@ mu, sigma = mlParams(X,labels)
 
 # Call the `testClassifier` and `plotBoundary` functions for this part.
 
-print("\n<|iris")
-testClassifier(BayesClassifier(), dataset='iris', split=0.7)
+#print("\n<|iris")
+#testClassifier(BayesClassifier(), dataset='iris', split=0.7)
 
 
 #print("\n<|vowel")
@@ -201,11 +200,9 @@ def trainBoost(base_classifier, X, labels, T=10):
         alpha = (np.log(1 - epsilon) - np.log(epsilon))/2
         alphas.append(alpha)
         w_tmp = wCur
-        for v in wrong_votes:
-            wCur[v] = w_tmp[v] * np.exp(alpha)
-        for v in correct_votes:
-            wCur[v] = w_tmp[v] * np.exp(-alpha)
-        wCur /= sum(wCur)
+        wCur[wrong_votes] = w_tmp[wrong_votes] * np.exp(alpha)
+        wCur[correct_votes] = w_tmp[correct_votes] * np.exp(-alpha)
+        np.linalg.norm(wCur)
         # ==========================
         
     return classifiers, alphas
