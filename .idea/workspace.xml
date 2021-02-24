@@ -30,8 +30,8 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Python.map">
-    <configuration name="gif" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.bayesian_regression">
+    <configuration name="bayesian_regression" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dectrees" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -39,11 +39,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/SVM" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tentap" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SVM/gif.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tentap/bayesian_regression.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -52,7 +52,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="lab1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="bayreg" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dectrees" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -60,11 +60,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dectrees/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tentap" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dectrees/python/lab1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tentap/bayreg.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -94,7 +94,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="linreg" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dectrees" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -102,11 +102,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/SVM" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tentap" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SVM/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tentap/linreg.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -138,11 +138,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.bayesian_regression" />
+        <item itemvalue="Python.linreg" />
+        <item itemvalue="Python.bayreg" />
         <item itemvalue="Python.map" />
         <item itemvalue="Python.lab3" />
-        <item itemvalue="Python.main" />
-        <item itemvalue="Python.gif" />
-        <item itemvalue="Python.lab1" />
       </list>
     </recent_temporary>
   </component>
@@ -170,46 +170,46 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="771" y="294" key="FileChooserDialogImpl" timestamp="1613930579911">
+    <state x="771" y="294" key="FileChooserDialogImpl" timestamp="1614102813432">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
-    <state x="771" y="294" key="FileChooserDialogImpl/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1613930579911" />
-    <state width="1838" height="295" key="GridCell.Tab.0.bottom" timestamp="1614076783671">
+    <state x="771" y="294" key="FileChooserDialogImpl/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614102813432" />
+    <state width="1838" height="356" key="GridCell.Tab.0.bottom" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
     <state width="1274" height="75" key="GridCell.Tab.0.bottom/-1858.0.1858.1080/62.0.1858.1080@-1858.0.1858.1080" timestamp="1613730632706" />
-    <state width="1838" height="295" key="GridCell.Tab.0.bottom/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614076783671" />
-    <state width="1838" height="295" key="GridCell.Tab.0.center" timestamp="1614076783671">
+    <state width="1838" height="356" key="GridCell.Tab.0.bottom/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.0.center" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
     <state width="1274" height="75" key="GridCell.Tab.0.center/-1858.0.1858.1080/62.0.1858.1080@-1858.0.1858.1080" timestamp="1613730632705" />
-    <state width="1838" height="295" key="GridCell.Tab.0.center/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614076783671" />
-    <state width="1838" height="295" key="GridCell.Tab.0.left" timestamp="1614076783671">
+    <state width="1838" height="356" key="GridCell.Tab.0.center/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.0.left" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
     <state width="1274" height="75" key="GridCell.Tab.0.left/-1858.0.1858.1080/62.0.1858.1080@-1858.0.1858.1080" timestamp="1613730632705" />
-    <state width="1838" height="295" key="GridCell.Tab.0.left/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614076783671" />
-    <state width="1838" height="295" key="GridCell.Tab.0.right" timestamp="1614076783671">
+    <state width="1838" height="356" key="GridCell.Tab.0.left/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.0.right" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
     <state width="1274" height="75" key="GridCell.Tab.0.right/-1858.0.1858.1080/62.0.1858.1080@-1858.0.1858.1080" timestamp="1613730632706" />
-    <state width="1838" height="295" key="GridCell.Tab.0.right/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614076783671" />
-    <state width="1837" height="356" key="GridCell.Tab.1.bottom" timestamp="1613045679640">
+    <state width="1838" height="356" key="GridCell.Tab.0.right/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.1.bottom" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
-    <state width="1837" height="356" key="GridCell.Tab.1.bottom/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1613045679640" />
-    <state width="1837" height="356" key="GridCell.Tab.1.center" timestamp="1613045679640">
+    <state width="1838" height="356" key="GridCell.Tab.1.bottom/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.1.center" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
-    <state width="1837" height="356" key="GridCell.Tab.1.center/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1613045679640" />
-    <state width="1837" height="356" key="GridCell.Tab.1.left" timestamp="1613045679640">
+    <state width="1838" height="356" key="GridCell.Tab.1.center/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.1.left" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
-    <state width="1837" height="356" key="GridCell.Tab.1.left/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1613045679640" />
-    <state width="1837" height="356" key="GridCell.Tab.1.right" timestamp="1613045679640">
+    <state width="1838" height="356" key="GridCell.Tab.1.left/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
+    <state width="1838" height="356" key="GridCell.Tab.1.right" timestamp="1614167317883">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
-    <state width="1837" height="356" key="GridCell.Tab.1.right/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1613045679640" />
+    <state width="1838" height="356" key="GridCell.Tab.1.right/-1858.0.1858.1080/62.0.1858.1080@62.0.1858.1080" timestamp="1614167317883" />
     <state x="492" y="184" key="SettingsEditor" timestamp="1613568707998">
       <screen x="62" y="0" width="1858" height="1080" />
     </state>
